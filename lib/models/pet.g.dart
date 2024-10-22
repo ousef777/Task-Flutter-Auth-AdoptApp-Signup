@@ -7,11 +7,11 @@ part of 'pet.dart';
 // **************************************************************************
 
 Pet _$PetFromJson(Map<String, dynamic> json) => Pet(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
       image: json['image'] as String,
       adopted: json['adopted'] as bool? ?? false,
-      age: json['age'] as int,
+      age: (json['age'] as num).toInt(),
       gender: json['gender'] as String,
     );
 

@@ -1,17 +1,61 @@
+import 'package:adopt_app/providers/auth_provider.dart';
 import 'package:adopt_app/providers/pets_provider.dart';
 import 'package:adopt_app/widgets/pet_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pet Adopt"),
+      ),
+      drawer: Drawer(
+        child: Consumer<AuthProvider>(
+          builder: (context, provider, Object) {
+            return ListView(
+                        padding: EdgeInsets.zero,
+                        children: [
+                          if(provider.token.isNotEmpty)
+                          ...[
+                            Text("Welcome ${provider.user.username}"),
+                            ListTile(
+                              title: const Text("Sign out"),
+                              trailing: const Icon(Icons.how_to_reg),
+                              onTap: () {
+                                provider.token = "";
+                              },
+                            )
+                          ]
+                          else ...[
+                            const DrawerHeader(
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                              ),
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("Sign in please"),
+                            ),
+                            ListTile(
+                              title: const Text("Signup"),
+                              trailing: const Icon(Icons.how_to_reg),
+                              onTap: () {
+                                GoRouter.of(context).push('/signup');
+                              },
+                            )
+                          ]
+                        ],
+                      );
+          }
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -70,3 +114,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
+// var list = [1,2,3];
+// var list2 = [...list, 4,5,6];
